@@ -30,7 +30,6 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Properties;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -84,7 +83,6 @@ public class BasicEndpointCallerTest {
     }
 
     @Test
-    @Ignore
     public void callEndpointWithoutResponse() throws ODataClientException, MalformedURLException {
         thrown.expect(ODataClientHttpError.class);
         thrown.expectMessage("Unable to get response from OData service: No Response");
@@ -193,7 +191,6 @@ public class BasicEndpointCallerTest {
     }
 
     @Test
-    @Ignore
     public void testIOExceptionOnOpenConnection() throws IOException, ODataClientException {
         URL ioExceptionOnConnectUrl = URLTestUtils.getIOExceptionThrowingUrl(true);
         Properties properties = new Properties();

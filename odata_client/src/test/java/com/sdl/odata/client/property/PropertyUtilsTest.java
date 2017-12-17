@@ -16,7 +16,6 @@
 package com.sdl.odata.client.property;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Properties;
@@ -31,7 +30,6 @@ public class PropertyUtilsTest {
     private static final String PROPERTY_NAME = "propertyName";
 
     @Test
-    @Ignore
     public void testGetLongPropertyFromString() {
         Assert.assertEquals(Long.valueOf(150L), PropertyUtils.getLongProperty("150"));
         assertNull(PropertyUtils.getLongProperty("150a"));
