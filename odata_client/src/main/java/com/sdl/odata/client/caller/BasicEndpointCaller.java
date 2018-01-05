@@ -45,7 +45,7 @@ import java.util.regex.Pattern;
 import static com.sdl.odata.api.service.HeaderNames.ODATA_CHUNKED_ERROR_MESSAGE_PROPERTY;
 import static com.sdl.odata.api.service.HeaderNames.TRANSFER_ENCODING;
 import static com.sdl.odata.api.service.MediaType.ATOM_XML;
-import static com.sdl.odata.api.service.MediaType.XML;
+import static com.sdl.odata.api.service.MediaType.JSON;
 import static com.sdl.odata.client.ODataClientConstants.DefaultValues.CLIENT_PROXY_PORT_DEFAULT;
 import static com.sdl.odata.client.ODataClientConstants.DefaultValues.CLIENT_TIMEOUT_DEFAULT;
 import static com.sdl.odata.client.ODataClientConstants.WebService.CLIENT_CONNECTION_TIMEOUT;
@@ -85,7 +85,7 @@ public class BasicEndpointCaller implements EndpointCaller {
     @Override
     public String callEndpoint(Map<String, String> requestProperties, URL urlToCall) throws ODataClientException {
         LOG.debug("Preparing the call endpoint for given url: {}", urlToCall);
-        HttpURLConnection conn = getConnection(populateRequestProperties(requestProperties, -1, null, XML), urlToCall);
+        HttpURLConnection conn = getConnection(populateRequestProperties(requestProperties, -1, null, JSON), urlToCall);
         return getResponse(conn);
     }
 
