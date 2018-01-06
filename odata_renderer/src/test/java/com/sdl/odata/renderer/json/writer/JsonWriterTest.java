@@ -201,7 +201,7 @@ public class JsonWriterTest extends WriterTest {
                                         String expectedEntityPath)
             throws IOException, ODataRenderException {
 
-        JsonWriter writer = new JsonWriter(odataUri, entityDataModel);
+        JsonWriter writer = new JsonWriter(odataUri, entityDataModel, null);
 
         String jsonStream;
         if (data instanceof List) {

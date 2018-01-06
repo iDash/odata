@@ -51,7 +51,7 @@
         <module>odata_controller</module>
         <module>odata_webservice</module>
         <module>odata_war</module>
-        <module>odata_client_tracing</module>
+        <!--module>odata_client_tracing</module-->
     </modules>
 
     <properties>
