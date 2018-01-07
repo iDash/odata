@@ -15,23 +15,6 @@
  */
 package com.sdl.odata.renderer.json.writer;
 
-import static com.sdl.odata.JsonConstants.CONTEXT;
-import static com.sdl.odata.JsonConstants.COUNT;
-import static com.sdl.odata.JsonConstants.ID;
-import static com.sdl.odata.JsonConstants.TYPE;
-import static com.sdl.odata.JsonConstants.VALUE;
-import static com.sdl.odata.ODataRendererUtils.checkNotNull;
-import static com.sdl.odata.ODataRendererUtils.isForceExpandParamSet;
-import static com.sdl.odata.api.edm.model.MetaType.COMPLEX;
-import static com.sdl.odata.api.edm.model.MetaType.ENTITY;
-import static com.sdl.odata.api.parser.ODataUriUtil.asJavaList;
-import static com.sdl.odata.api.parser.ODataUriUtil.getExpandItems;
-import static com.sdl.odata.api.parser.ODataUriUtil.getSimpleExpandPropertyNames;
-import static com.sdl.odata.api.parser.ODataUriUtil.hasCountOption;
-import static com.sdl.odata.util.edm.EntityDataModelUtil.formatEntityKey;
-import static com.sdl.odata.util.edm.EntityDataModelUtil.getEntityName;
-import static com.sdl.odata.util.edm.EntityDataModelUtil.visitProperties;
-
 import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -51,6 +34,9 @@ import com.sdl.odata.api.parser.ODataUri;
 import com.sdl.odata.api.renderer.ODataRenderException;
 import com.sdl.odata.api.service.MediaType;
 import com.sdl.odata.renderer.json.util.JsonWriterUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -61,8 +47,23 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import static com.sdl.odata.JsonConstants.CONTEXT;
+import static com.sdl.odata.JsonConstants.COUNT;
+import static com.sdl.odata.JsonConstants.ID;
+import static com.sdl.odata.JsonConstants.TYPE;
+import static com.sdl.odata.JsonConstants.VALUE;
+import static com.sdl.odata.ODataRendererUtils.checkNotNull;
+import static com.sdl.odata.ODataRendererUtils.isForceExpandParamSet;
+import static com.sdl.odata.api.edm.model.MetaType.COMPLEX;
+import static com.sdl.odata.api.edm.model.MetaType.ENTITY;
+import static com.sdl.odata.api.parser.ODataUriUtil.asJavaList;
+import static com.sdl.odata.api.parser.ODataUriUtil.getExpandItems;
+import static com.sdl.odata.api.parser.ODataUriUtil.getSimpleExpandPropertyNames;
+import static com.sdl.odata.api.parser.ODataUriUtil.hasCountOption;
+import static com.sdl.odata.util.edm.EntityDataModelUtil.formatEntityKey;
+import static com.sdl.odata.util.edm.EntityDataModelUtil.getEntityName;
+import static com.sdl.odata.util.edm.EntityDataModelUtil.visitProperties;
 
 /**
  * Writer capable of creating a JSON stream containing either
