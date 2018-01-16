@@ -15,6 +15,7 @@
  */
 package com.sdl.odata.unmarshaller.json;
 
+import com.sdl.odata.api.parser.ODataPatchInfo;
 import com.sdl.odata.unmarshaller.AbstractParser;
 import com.sdl.odata.unmarshaller.json.core.JsonNullableValidator;
 import com.sdl.odata.unmarshaller.json.core.JsonParserUtils;
@@ -51,8 +52,26 @@ public class ODataJsonParser extends AbstractParser {
 
     public ODataJsonParser(ODataRequestContext request, ODataParser uriParser) {
         super(request, uriParser);
+        ODataPatchInfo patchInfo = request.getProperty(ODataPatchInfo.class);
+        if (patchInfo != null) {
+            this.fields = patchInfo.getFields();
+            this.links = patchInfo.getLinks();
+            this.odataValues = patchInfo.getOdataValues();
+        }
     }
 
+    public void applyPatch(Object entity)
+        throws ODataException {
+        JsonPropertyExpander expander = new JsonPropertyExpander(getEntityDataModel());
+
+        String entityName = getEntityName();
+
+        StructuredType entityType = JsonParserUtils.getStructuredType(entityName, getEntityDataModel());
+
+        expander.setEntityProperties(entity, entityType, fields, null, true);
+        setEntityNavigationProperties(entity, JsonParserUtils.getStructuredType(entityName, getEntityDataModel()));
+
+    }
     /**
      * Initialize processor ready for for unmarshalling entity.
      *
@@ -66,6 +85,8 @@ public class ODataJsonParser extends AbstractParser {
         fields = processor.getValues();
         odataValues = processor.getODataValues();
         links = processor.getLinks();
+
+        context.setProperty(new ODataPatchInfo(fields, odataValues, links));
     }
 
     @Override

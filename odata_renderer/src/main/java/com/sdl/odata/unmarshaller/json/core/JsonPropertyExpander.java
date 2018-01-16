@@ -150,11 +150,29 @@ public class JsonPropertyExpander {
      * @throws ODataException If unable to fill primitive properties
      */
     public void fillPrimitiveProperty(Object entity, Set<String> keySet, StructuralProperty property, Field field,
-                                      String node, Map<String, Object> map) throws ODataException {
+        String node, Map<String, Object> map) throws ODataException {
+        fillPrimitiveProperty(entity, keySet, property, field, node, map, false);
+    }
+
+
+    /**
+     * Populates the primitive property of the entity with the relevant field value.
+     *
+     * @param entity   the entity
+     * @param keySet   the set of entity properties
+     * @param property the primitive property
+     * @param field    the Java field
+     * @param node     the current node
+     * @param map      the map of field values
+     * @param acceptNull if false, null values will be skipped
+     * @throws ODataException If unable to fill primitive properties
+     */
+    public void fillPrimitiveProperty(Object entity, Set<String> keySet, StructuralProperty property, Field field,
+                                      String node, Map<String, Object> map, boolean acceptNull) throws ODataException {
         for (String target : keySet) {
             if (node.equalsIgnoreCase(target)) {
                 Object value = getFieldValueByType(property.getTypeName(), target, map, false);
-                if (value != null) {
+                if (value != null || acceptNull) {
                     setFieldValue(field, entity, value);
                     break;
                 } else {
@@ -300,7 +318,21 @@ public class JsonPropertyExpander {
      * @throws ODataException If unable to set entity properties
      */
     public void setEntityProperties(Object entity, StructuredType entityType, Map<String, Object> map,
-                                    Object currentNode) throws ODataException {
+        Object currentNode) throws ODataException {
+        setEntityProperties(entity, entityType, map, currentNode, false);
+    }
+    /**
+     * Sets the given entity with structural properties from the fields.
+     *
+     * @param entity      entity
+     * @param entityType  entityType
+     * @param map         a map of field values
+     * @param currentNode the current node to process
+     * @param acceptNull  if false, null values will be skipped.
+     * @throws ODataException If unable to set entity properties
+     */
+    public void setEntityProperties(Object entity, StructuredType entityType, Map<String, Object> map,
+                                    Object currentNode, boolean acceptNull) throws ODataException {
 
         Set<String> keySet = map.keySet();
         for (StructuralProperty property : getAllProperties(entityType, entityDataModel)) {
@@ -316,7 +348,7 @@ public class JsonPropertyExpander {
                 }
             } else {
                 if (currentNode == null) {
-                    fillPrimitiveProperty(entity, keySet, property, field, node, map);
+                    fillPrimitiveProperty(entity, keySet, property, field, node, map, acceptNull);
                 } else {
                     if (currentNode instanceof String) {
                         fillEntryFeed(entity, currentNode, property, field, node, map);
