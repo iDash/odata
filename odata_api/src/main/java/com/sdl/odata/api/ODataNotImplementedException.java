@@ -18,7 +18,7 @@ package com.sdl.odata.api;
 /**
  * Exception thrown when an error occurs because something is not implemented.
  */
-public class ODataNotImplementedException extends ODataServerException {
+public class ODataNotImplementedException extends ODataClientException {
 
     public ODataNotImplementedException(String message) {
         super(ODataErrorCode.NOT_IMPLEMENTED_ERROR, message);
